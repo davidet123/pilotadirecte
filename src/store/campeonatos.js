@@ -3,7 +3,6 @@ import db from '@/firebase/init.js'
 export default {
   state: {
     campeonatos: [],
-    camp: 'hola'
   },
   getters: {
     campeonatos: state=> {

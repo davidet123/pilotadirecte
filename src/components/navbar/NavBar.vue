@@ -48,10 +48,11 @@ export default {
   data() {
     return {
       links: [
-        {icon: 'lock_open', titulo: 'log In', link: '#'},
+        /* {icon: 'lock_open', titulo: 'log In', link: '#'},
         {icon: 'exit_to_app', titulo: 'log Out', link: '#'},
-        {icon: 'how_to_reg', titulo: 'Crear Usuario', link: '#'},
+        {icon: 'how_to_reg', titulo: 'Crear Usuario', link: '#'}, */
         {icon: 'control_point', titulo: 'Crear Partida', link: '/crearpartida'},
+        {icon: 'control_point', titulo: 'Borrar Partida', link: '/borrarpartida'},
         {icon: 'control_point', titulo: 'Campeonatos', link: '/campeonatos'}
       ],
       drawer: false

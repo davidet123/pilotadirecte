@@ -147,20 +147,27 @@ export default {
     },
     sumarPunto(equipo) {
       this.addLog = true
+      var puntoAzul = this.puntos.indexOf(this.puntosEq2)
+      var puntoRojo = this.puntos.indexOf(this.puntosEq1)
       if (equipo === 1) {
-        var puntoRojo = this.puntos.indexOf(this.puntosEq1)
+        
         puntoRojo ++
         if (puntoRojo <= 3) {
           this.puntosEq1 = this.puntos[puntoRojo]
+          if(puntoRojo == 3 && puntoAzul == 3) {
+            this.puntosEq2 = this.puntos[2]
+          }
         } else {
           this.puntosEq1 = this.puntos[0]
           this.sumarJuego(1)
         }
       } else if (equipo === 2) {
-        var puntoAzul = this.puntos.indexOf(this.puntosEq2)
         puntoAzul ++
         if (puntoAzul <= 3) {
           this.puntosEq2 = this.puntos[puntoAzul]
+          if(puntoAzul == 3 && puntoRojo == 3) {
+            this.puntosEq1 = this.puntos[2]
+          }
         } else {
           this.puntosEq2 = this.puntos[0]
           this.sumarJuego(2)

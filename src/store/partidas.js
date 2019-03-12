@@ -16,7 +16,7 @@ export default {
     },
     partidesSeguents: state=> {
       var seguents = state.partidas.filter(partida=> {
-        return partida.directo == false;
+        return partida.directo == false && partida.partidaAcabada == false;
       });
       return seguents;
     },
@@ -48,6 +48,14 @@ export default {
     },
     cargarPartidas: (context, payload) => {
       context.partidas.push(payload);
+    },
+    eliminarPartida: (context, payload) => {
+      var partidas = context.partidas
+      var final = partidas.filter(partida => {
+        return partida.id !== payload
+      })
+      context.partidas = final
+      
     },
     actualizarMarcador: (context, payload) => {
       let partida = context.partidas.find( id => {
@@ -103,6 +111,11 @@ export default {
         })
       })
     },
-
+    eliminarPartida: ({commit}, payload) => {
+      db.collection('partidas').doc(payload).delete()
+      .then(() => {
+        commit('eliminarPartida', payload)
+      })
+    }
   }
 }
