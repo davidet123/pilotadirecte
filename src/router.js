@@ -5,7 +5,10 @@ import CrearPartida from './views/CrearPartida.vue'
 import BorrarPartida from './views/BorrarPartida.vue'
 import Partida from './views/Partida.vue'
 import IntroducirResultado from './views/IntroducirResultado.vue'
+
 import LogIn from './views/usuarios/LogIn.vue'
+
+import Campeonatos from './views/campeonatos/Campeonatos.vue'
 
 Vue.use(Router)
 
@@ -44,6 +47,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: LogIn
+    },
+    {
+      path: '/campeonatos',
+      name: 'campeonatos',
+      component: Campeonatos
     },
     {
       path: '/about',

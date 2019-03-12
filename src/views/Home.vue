@@ -1,5 +1,5 @@
 <template>
-  <v-container class="content">
+  <v-container fluid class="content">
     <div class="carga text-xs-center" v-if="cargando">
       <v-progress-circular
       indeterminate
@@ -7,98 +7,104 @@
     ></v-progress-circular>
     </div>
     <div class="main" v-if="!cargando">
-      <h3 class="pa-3 text-xs-center"  v-if="partidesDirecte.length != 0">Partides en directe</h3>
-      <v-card flat class="pa-3" v-for="partida in partidesDirecte"
-                :key="partida.id" @click="irPartida(partida.id)" style="cursor: pointer;">
-        <v-layout row wrap>
-          <v-flex xs6>
-            <div class="caption grey--text text-xs-center">PARTIDA</div>
-            <div class="text-xs-center">{{ partida.equipo1 }} VS {{ partida.equipo2 }}</div>
+      <h2 class="pa-3 text-xs-center"  v-if="partidesDirecte.length != 0">Partides en directe</h2>
+      <v-card flat
+        v-for="partida in partidesDirecte"
+        :key="partida.id"
+        @click="irPartida(partida.id)"
+        style="cursor: pointer;">
+        <v-layout row wrap class="fila directo">
+          <v-flex xs7 sm6 offset-sm1 class="pa-2"><h3>{{ partida.campeonato }}</h3></v-flex>
+          <v-flex xs2 class="py-2 text-xs-center"><h4>JOCS</h4></v-flex>
+          <v-flex xs2 class="py-2 text-xs-center"><h4>TANTEIG</h4></v-flex>
+          <v-flex xs7 sm6 offset-sm1 class="pl-2"><p>{{ partida.equipo1 }}</p></v-flex>
+          <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.juegoEq1 }}</p></v-flex>
+          <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.puntosEq1 }}</p></v-flex>
+          <v-flex xs7 sm6 offset-sm1 class="pl-2"><p>{{ partida.equipo2 }}</p></v-flex>
+          <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.juegoEq2 }}</p></v-flex>
+          <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.puntosEq2 }}</p></v-flex>
+          <v-flex xs12  class="text-xs-center">
+            <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
-          <v-flex xs6>
-            <div class="caption grey--text text-xs-center">MARCADOR</div>
-            <div class="text-xs-center">{{ partida.marcador.juegoEq1 }} {{ partida.marcador.puntosEq1 }} - {{ partida.marcador.puntosEq2 }} {{ partida.marcador.juegoEq2 }}</div>
+        </v-layout>
+      </v-card>
+
+    
+
+      <h2 class="pa-3 mt-3 text-xs-center"  v-if="partidesSeguents.length != 0">Próximes partides</h2>
+      <v-card flat class="pa-3" 
+        style="cursor: pointer;"
+        v-for="partida in partidesSeguents"
+        :key="partida.id" 
+        @click="irPartida(partida.id)">
+        <v-layout row wrap class="fila">
+          <v-flex xs6 sm3>
+            <div class="caption grey--text text-xs-center">PARTIDA</div>
+            <div class="text-xs-center mb-2">{{ partida.equipo1 }} - {{ partida.equipo2 }}</div>
+          </v-flex>
+          <v-flex xs6 sm3>
+            <div class="caption grey--text text-xs-center">CAMPIONAT</div>
+            <div class="text-xs-center mb-2">{{ partida.campeonato }}</div>
+          </v-flex>
+          <v-flex xs4 sm3>
+            <div class="caption grey--text text-xs-center">LLOC</div>
+            <div class="text-xs-center">{{ partida.lugar }}</div>
+          </v-flex>
+          <v-flex xs4 sm3>
+            <div class="caption grey--text text-xs-center">DIA</div>
+            <div class="text-xs-center">{{ partida.fecha }}</div>
+          </v-flex>
+          <v-flex xs4 sm3>
+            <div class="caption grey--text text-xs-center">HORA</div>
+            <div class="text-xs-center">{{ partida.hora }}</div>
           </v-flex>
           <v-flex xs12  class="text-xs-center">
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
-          
         </v-layout>
       </v-card>
-       <h3 class="pa-3"  v-if="partidesSeguents.length != 0">Próximes partides</h3>
-      <v-card flat class="pa-3" style="cursor: pointer;" v-for="partida in partidesSeguents"
-                :key="partida.id" @click="irPartida(partida.id)">
-        <v-layout row wrap >
-          <v-flex xs3>
+
+
+      <h2 class="pa-3 mt-3 text-xs-center"  v-if="partidasAcabadas.length != 0">Próximes partides</h2>
+      <v-card flat class="pa-3" 
+        style="cursor: pointer;"
+        v-for="partida in partidasAcabadas"
+        :key="partida.id" 
+        @click="irPartida(partida.id)"
+        >
+        <v-layout row wrap class="fila">
+          <v-flex xs6 sm3>
             <div class="caption grey--text text-xs-center">PARTIDA</div>
-            <div class="text-xs-center">{{ partida.equipo1 }} VS {{ partida.equipo2 }}</div>
+            <div class="text-xs-center mb-2">{{ partida.equipo1 }} - {{ partida.equipo2 }}</div>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6 sm3>
+            <div class="caption grey--text text-xs-center">CAMPIONAT</div>
+            <div class="text-xs-center mb-2">{{ partida.campeonato }}</div>
+          </v-flex>
+          <v-flex xs4 sm3>
             <div class="caption grey--text text-xs-center">LLOC</div>
             <div class="text-xs-center">{{ partida.lugar }}</div>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs4 sm3>
             <div class="caption grey--text text-xs-center">DIA</div>
             <div class="text-xs-center">{{ partida.fecha }}</div>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs4 sm3>
             <div class="caption grey--text text-xs-center">HORA</div>
             <div class="text-xs-center">{{ partida.hora }}</div>
           </v-flex>
-        </v-layout>
-        <v-flex xs12  class="text-xs-center">
+          <v-flex xs12  class="text-xs-center">
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
+        </v-layout>
       </v-card>
-      <!-- <v-layout row>
-        <v-flex xs12 sm10 offset-sm1>
-          <v-card>
-            <v-list two-line subheader v-if="partidesDirecte.length != 0">
-              <v-subheader inset>Partides en directe</v-subheader>
-              <v-list-tile
-                v-for="partida in partidesDirecte"
-                :key="partida.id"
-                avatar
-              >
-                <v-list-tile class="avatar">
-                  <h3 class="red--text">DIRECTE</h3>
-                </v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ partida.equipo1 }} vs {{ partida.equipo2 }}</v-list-tile-title>
-                  <v-list-tile-sub-title>
-                    {{ partida.fecha }} - {{ partida.hora }}
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-            <v-list two-line subheader v-if="partidesSeguents.length != 0">
-              <v-subheader inset>Partides seguents</v-subheader>
-              <v-list-tile
-                v-for="partida in partidesSeguents"
-                :key="partida.id"
-                avatar
-                @click="irPartida(partida.id)"
-              >
-                <v-list-tile class="avatar">
-                  <h3>{{ partida.lugar }}</h3>
-                </v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ partida.equipo1 }} vs {{ partida.equipo2 }}</v-list-tile-title>
-                  <v-list-tile-sub-title>
-                    {{ partida.fecha }} - {{ partida.hora }}
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-          </v-card>
-        </v-flex>
-     </v-layout> -->
+
+
      </div>
   </v-container>
 </template>
 
 <script>
-  //import HelloWorld from '../components/HelloWorld'
 
   export default {
     computed: {
@@ -114,6 +120,9 @@
       },
       cargando() {
         return this.$store.getters.loading
+      },
+      partidasAcabadas() {
+        return this.$store.getters.partidasAcabadas
       }
     },
     methods: {
@@ -127,3 +136,12 @@
 
   }
 </script>
+
+<style>
+  .fila {
+    border-bottom: 1px solid #cccccc;
+  }
+  .directo {
+    border-left: 4px solid red;
+  }
+</style>

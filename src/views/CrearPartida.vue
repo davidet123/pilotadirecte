@@ -5,7 +5,15 @@
       <v-form>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-text-field v-model="equipo1" label="Equipo 1"></v-text-field>
+            <v-select
+            v-model="campeonato"
+            :items="getCamp"
+            label="Campionat"
+            ></v-select>
+          </v-flex>
+          <v-flex xs12>
+            <h3 class="grey--text text-xs-center">Equip Roig</h3>
+            <v-text-field v-model="equipo1" label="Nom de l'equip"></v-text-field>
           </v-flex>
           <v-flex xs4>
             <v-text-field  v-model="compEquipo1[0]" label="Jugador 1"></v-text-field>
@@ -17,7 +25,8 @@
             <v-text-field  v-model="compEquipo1[2]" label="Jugador 3"></v-text-field>
           </v-flex>
           <v-flex xs12 mt-4>
-            <v-text-field v-model="equipo2" label="Equipo 2"></v-text-field>
+            <h3 class="grey--text text-xs-center">Equip Blau</h3>
+            <v-text-field v-model="equipo2" label="Nom de l'equip"></v-text-field>
           </v-flex>
           <v-flex xs4>
             <v-text-field  v-model="compEquipo2[0]" label="Jugador 1"></v-text-field>
@@ -67,12 +76,16 @@
         fecha: null,
         lugar: '',
         hora: '',
-        tanteoInicial: null,
+        tanteoInicial: 0,
+        campeonato: ''
       }
     },
     computed: {
       fechaFormateada() {
         return this.fecha ? format(this.fecha, 'DD MMM YYYY') : ''
+      },
+      getCamp() {
+        return this.$store.getters.campeonatos
       }
     },
     methods: {
@@ -90,7 +103,8 @@
             juegoEq2: parseInt(this.tanteoInicial),
             puntosEq1: 'NET',
             puntosEq2: 'NET'
-          }
+          },
+          campeonato: this.campeonato
         }
         this.$store.dispatch('addPartida', partida)
       }

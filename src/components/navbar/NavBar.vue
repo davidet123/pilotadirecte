@@ -1,7 +1,7 @@
 <template>
 <nav>
-  <v-toolbar app>
-    <v-toolbar-side-icon @click="drawer = !drawer" class="hidden-sm-and-up"></v-toolbar-side-icon>
+  <v-toolbar app class="orange lighten-1 white--text">
+    <v-toolbar-side-icon @click="drawer = !drawer" class="white--text hidden-sm-and-up"></v-toolbar-side-icon>
     <v-toolbar-title class="headline text-uppercase">
       <router-link to='/' tag='span' style='cursor: pointer'>
         <span>Pilota</span>
@@ -14,7 +14,8 @@
       v-for="item in links"
       :key="item.titulo"
       router
-      :to="item.link">
+      :to="item.link"
+      class="white--text">
       {{ item.titulo }}
       </v-btn>
     </v-toolbar-items>
@@ -50,7 +51,8 @@ export default {
         {icon: 'lock_open', titulo: 'log In', link: '#'},
         {icon: 'exit_to_app', titulo: 'log Out', link: '#'},
         {icon: 'how_to_reg', titulo: 'Crear Usuario', link: '#'},
-        {icon: 'control_point', titulo: 'Crear Partida', link: '/crearpartida'}
+        {icon: 'control_point', titulo: 'Crear Partida', link: '/crearpartida'},
+        {icon: 'control_point', titulo: 'Campeonatos', link: '/campeonatos'}
       ],
       drawer: false
     }

@@ -103,6 +103,7 @@ export default {
         puntosEq2: 'NET',
         juegoEq2: 0,
         directo: false,
+        partidaAcabada: false,
         desactivar: true,
         partidaCargada: false,
         log: [],
@@ -128,6 +129,7 @@ export default {
         this.juegoEq1 = data.marcador.juegoEq1
         this.juegoEq2 = data.marcador.juegoEq2
         this.directo = data.directo
+        this.partidaAcabada = data.partidaAcabada
         this.log = data.log
         if(this.directo) {
           this.desactivar = false
@@ -235,6 +237,9 @@ export default {
     fin() {
       this.directo = false
       this.desactivar = true
+      this.partidaAcabada = true
+      db.collection('partidas').doc(this.id)
+      .update({partidaAcabada: true})
     }   
   },
   watch: {

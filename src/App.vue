@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import NavBar from './views/navbar/NavBar.vue'
+import NavBar from './components/navbar/NavBar.vue'
 export default {
   name: 'App',
   components: {
@@ -22,6 +22,7 @@ export default {
   },
   created() {
     this.$store.dispatch('cargarPartidas')
+    this.$store.dispatch('cargarCampeonatos')
     this.$store.dispatch('actualizarPartidas')
   }
 }

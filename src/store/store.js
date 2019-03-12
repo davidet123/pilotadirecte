@@ -1,9 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import db from './firebase/init.js'
+import partidas from './partidas.js'
+import campeonatos from './campeonatos.js'
 
 Vue.use(Vuex)
 
+const store = new Vuex.Store({
+  modules: {
+    partidas,
+    campeonatos
+  }
+});
+
+export default store
+/* 
 export default new Vuex.Store({
   state: {
      partidas: [
@@ -26,7 +36,7 @@ export default new Vuex.Store({
        fecha: 'mañana',
        lugar: 'valencia',
        hora: '12:00',
-       directo: false} */
+       directo: false} 
      ],
      cargando:false
 
@@ -123,3 +133,4 @@ export default new Vuex.Store({
 
   }
 })
+ */
