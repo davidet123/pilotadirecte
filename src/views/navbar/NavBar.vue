@@ -1,0 +1,60 @@
+<template>
+<nav>
+  <v-toolbar app>
+    <v-toolbar-side-icon @click="drawer = !drawer" class="hidden-sm-and-up"></v-toolbar-side-icon>
+    <v-toolbar-title class="headline text-uppercase">
+      <router-link to='/' tag='span' style='cursor: pointer'>
+        <span>Pilota</span>
+        <span class="font-weight-light">DIRECTE</span>
+      </router-link>
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-toolbar-items class="hidden-xs-only">
+      <v-btn flat
+      v-for="item in links"
+      :key="item.titulo"
+      router
+      :to="item.link">
+      {{ item.titulo }}
+      </v-btn>
+    </v-toolbar-items>
+  </v-toolbar>
+  <v-navigation-drawer v-model="drawer" app class="orange darken-1">
+    <h3 class="white--text text-xs-center py-3">PILOTADIRECTE</h3>
+    <v-list>
+      <v-list-tile
+      v-for="item in links"
+      :key="item.titulo"
+      router
+      :to="item.link">
+        <v-list-tile-action>
+          <v-icon class="white--text">{{ item.icon }}</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title class="white--text">{{ item.titulo }} </v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+
+  </v-navigation-drawer>
+</nav>
+</template>
+
+  
+
+<script>
+export default {
+  data() {
+    return {
+      links: [
+        {icon: 'lock_open', titulo: 'log In', link: '#'},
+        {icon: 'exit_to_app', titulo: 'log Out', link: '#'},
+        {icon: 'how_to_reg', titulo: 'Crear Usuario', link: '#'},
+        {icon: 'control_point', titulo: 'Crear Partida', link: '/crearpartida'}
+      ],
+      drawer: false
+    }
+  }
+}
+</script>
+
