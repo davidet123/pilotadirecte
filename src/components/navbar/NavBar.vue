@@ -13,8 +13,7 @@
       <v-btn flat
       v-for="item in links"
       :key="item.titulo"
-      router
-      :to="item.link"
+      @click="goTo(item.link)"
       class="white--text">
       {{ item.titulo }}
       </v-btn>
@@ -48,14 +47,23 @@ export default {
   data() {
     return {
       links: [
-        /* {icon: 'lock_open', titulo: 'log In', link: '#'},
-        {icon: 'exit_to_app', titulo: 'log Out', link: '#'},
-        {icon: 'how_to_reg', titulo: 'Crear Usuario', link: '#'}, */
+        {icon: 'lock_open', titulo: 'log In', link: 'login'},
+        {icon: 'exit_to_app', titulo: 'log Out', link: 'logout'},
+        {icon: 'how_to_reg', titulo: 'Crear Usuario', link: '/signin'},
         {icon: 'control_point', titulo: 'Crear Partida', link: '/crearpartida'},
         {icon: 'control_point', titulo: 'Borrar Partida', link: '/borrarpartida'},
         {icon: 'control_point', titulo: 'Campeonatos', link: '/campeonatos'}
       ],
       drawer: false
+    }
+  },
+  methods: {
+    goTo(link) {
+      if(link !== 'logout'){
+        this.$router.push(link)
+      } else if (link === 'logout') {
+        this.$store.dispatch('logOut')
+      }
     }
   }
 }

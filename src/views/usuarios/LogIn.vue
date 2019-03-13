@@ -5,8 +5,8 @@
       <v-layout row class="text-xs-center">
         <v-flex xs6 offset-xs3>
           <v-text-field 
-          v-model="user"
-          label="Usuari"
+          v-model="email"
+          label="Email"
           type="email"></v-text-field>
         </v-flex>
       </v-layout>
@@ -16,6 +16,11 @@
           v-model="password" 
           label="Password"
           type="password"></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row class="text-xs-center">
+        <v-flex xs6 offset-xs3>
+          <p v-if="feedback" class="red--text">{{ feedback }}</p>
         </v-flex>
       </v-layout>
       <v-layout row class="text-xs-center">
@@ -31,14 +36,23 @@
 export default {
   data() {
     return {
-      user: '',
-      password: ''
+      email: null,
+      password: null
+    }
+  },
+  computed: {
+    feedback() {
+      return this.$store.getters.feedback
     }
   },
   methods: {
     login() {
-      console.log(this.user)
-      console.log(this.password)
+      if(this.email && this.password) {
+        this.$store.dispatch('logIn', {email:this.email, password: this.password})
+        this.$store.commit('feedback', null)
+      } else {
+        this.$store.commit('feedback', "Has d'omplir tots el camps")
+      }
     }
   }
 }

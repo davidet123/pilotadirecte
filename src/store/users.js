@@ -1,5 +1,5 @@
 import db from '@/firebase/init.js'
-import firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import 'firebase/auth'
 
 
@@ -20,6 +20,16 @@ export default {
   mutations: {
     feedback: (context, payload) => {
       context.feedback = payload
+    },
+    logOut(context) {
+      context.user = null
+    },
+    logIn: (context, payload) => {
+      console.log(payload)
+    },
+    setUser: (context, payload) => {
+      context.user = payload
+      console.log(context.user)
     }
 
   },
@@ -38,9 +48,9 @@ export default {
               rol: payload.rol,
               user_id: cred.user.uid
             }).then(() => {
-
+              this.$router.push('/')
             })
-             console.log(cred)
+
           })
           .catch(err=> {
             commit('feedback', err.message)
@@ -50,6 +60,29 @@ export default {
         }
       })
       console.log(payload.email)
+    },
+    logIn: ({commit}, payload) => {
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      .then(cred=> {
+        db.collection('users').where('user_id', "==", cred.user.uid).get()
+        .then(snapshot=> {
+          snapshot.forEach(doc=> {
+            console.log(doc.id)
+            db.collection('users').doc(doc.id).get()
+            .then(user=> {
+              commit('setUser', user.data())
+            })
+          })
+        })
+      })
+      .catch(err => {
+        commit('feedback', err.message)
+      })
+    },
+    logOut({commit}) {
+      firebase.auth().signOut().then(() => {
+        commit('logOut')
+      })
     }
   }
 }
