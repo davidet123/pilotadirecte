@@ -3,7 +3,7 @@
     <h1 class="text-xs-center">Accedir</h1>
     <v-form>
       <v-layout row class="text-xs-center">
-        <v-flex xs6 offset-xs3>
+        <v-flex xs8 offset-xs2>
           <v-text-field 
           v-model="email"
           label="Email"
@@ -11,7 +11,7 @@
         </v-flex>
       </v-layout>
       <v-layout row class="text-xs-center">
-        <v-flex xs6 offset-xs3>
+        <v-flex xs8 offset-xs2>
           <v-text-field 
           v-model="password" 
           label="Password"
@@ -19,12 +19,12 @@
         </v-flex>
       </v-layout>
       <v-layout row class="text-xs-center">
-        <v-flex xs6 offset-xs3>
+        <v-flex xs8 offset-xs2>
           <p v-if="feedback" class="red--text">{{ feedback }}</p>
         </v-flex>
       </v-layout>
       <v-layout row class="text-xs-center">
-        <v-flex xs6 offset-xs3>
+        <v-flex xs8 offset-xs2>
           <v-btn @click="login">Accedir</v-btn>
         </v-flex>
       </v-layout>

@@ -23,7 +23,7 @@
           <v-flex xs7 sm6 offset-sm1 class="pl-2"><p>{{ partida.equipo2 }}</p></v-flex>
           <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.juegoEq2 }}</p></v-flex>
           <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.puntosEq2 }}</p></v-flex>
-          <v-flex xs12  class="text-xs-center">
+          <v-flex xs12  class="text-xs-center" v-if="getUser">
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
         </v-layout>
@@ -58,7 +58,7 @@
             <div class="caption grey--text text-xs-center">HORA</div>
             <div class="text-xs-center">{{ partida.hora }}</div>
           </v-flex>
-          <v-flex xs12  class="text-xs-center">
+          <v-flex xs12  class="text-xs-center" v-if="getUser">
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
         </v-layout>
@@ -106,6 +106,9 @@
       },
       partidasAcabadas() {
         return this.$store.getters.partidasAcabadas
+      },
+      getUser() {
+        return this.$store.getters.getUser
       }
     },
     methods: {

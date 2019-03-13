@@ -9,6 +9,7 @@ export default {
     user: null,
     feedback: null,
     roles: ['admin', 'editor', 'marcador'],
+   
   },
   getters: {
     feedback: state=> {
@@ -31,7 +32,19 @@ export default {
   },
   mutations: {
     feedback: (context, payload) => {
-      context.feedback = payload
+      let err = payload
+      let error
+      if (err == 'auth/invalid-email') {
+        error = 'Direcció de email invalida'
+      } else if (err == 'auth/user-not-found') {
+        error = 'El usuari no existeix'
+      } else if (err == 'auth/wrong-password') {
+        error = 'Password incorrecte'
+      
+      } else {
+        error = payload
+      }
+      context.feedback = error
     },
     logOut(context) {
       context.user = null
@@ -47,7 +60,6 @@ export default {
       let ref = db.collection('users').doc(payload.user)
       ref.get().then(doc=> {
         if(doc.exists) {
-          console.log('ok')
           commit('feedback', 'El usuari existeix')
         } else {
           firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -56,19 +68,20 @@ export default {
               user: payload.nombre,
               rol: payload.rol,
               user_id: cred.user.uid
-            }).then(() => {
+            }
+            ).then(() => {
               commit('loading', false)
-              router.push({name: 'home'})
+              //console.log(doc)
+              //router.push({name: 'home'})
             })
           })
           .catch(err=> {
-            commit('feedback', err.message)
+            commit('feedback', err.code)
           })
-          
+          //console.log(doc)
           commit('feedback', 'Nom de usuari valid')
         }
       })
-      console.log(payload.email)
     },
     logIn: ({commit}, payload) => {
       commit('loading', true)
@@ -87,7 +100,7 @@ export default {
         })
       })
       .catch(err => {
-        commit('feedback', err.message)
+        commit('feedback', err.code)
       })
     },
     logOut({commit}) {
@@ -98,16 +111,16 @@ export default {
     setUser: ({commit}, payload) => {
       commit('loading', true)
       db.collection('users').where('user_id', "==", payload).get()
-        .then(snapshot=> {
-          snapshot.forEach(doc=> {
-            db.collection('users').doc(doc.id).get()
-            .then(user=> {
-              commit('setUser', user.data())
-              commit('loading', false)
-              router.push({name: 'home'})
-            })
+      .then(snapshot=> {
+        snapshot.forEach(doc=> {
+          db.collection('users').doc(doc.id).get()
+          .then(user=> {
+            commit('setUser', user.data())
+            commit('loading', false)
+            router.push({name: 'home'})
           })
         })
+      })
     }
   }
 }
