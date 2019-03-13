@@ -2,13 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import partidas from './partidas.js'
 import campeonatos from './campeonatos.js'
+import users from './users.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
     partidas,
-    campeonatos
+    campeonatos,
+    users
   }
 });
 

@@ -7,6 +7,7 @@ import Partida from './views/Partida.vue'
 import IntroducirResultado from './views/IntroducirResultado.vue'
 
 import LogIn from './views/usuarios/LogIn.vue'
+import SignIn from './views/usuarios/SignIn.vue'
 
 import Campeonatos from './views/campeonatos/Campeonatos.vue'
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: LogIn
+    },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: SignIn
     },
     {
       path: '/campeonatos',

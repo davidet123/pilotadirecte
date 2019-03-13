@@ -156,6 +156,7 @@ export default {
           this.puntosEq1 = this.puntos[puntoRojo]
           if(puntoRojo == 3 && puntoAzul == 3) {
             this.puntosEq2 = this.puntos[2]
+            this.puntosEq1 = this.puntos[2]
           }
         } else {
           this.puntosEq1 = this.puntos[0]
@@ -167,6 +168,7 @@ export default {
           this.puntosEq2 = this.puntos[puntoAzul]
           if(puntoAzul == 3 && puntoRojo == 3) {
             this.puntosEq1 = this.puntos[2]
+            this.puntosEq2 = this.puntos[2]
           }
         } else {
           this.puntosEq2 = this.puntos[0]

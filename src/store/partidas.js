@@ -92,7 +92,6 @@ export default {
       db.collection('partidas').get()
       .then (data=> {
         data.forEach(doc=> {
-
           let partida = doc.data()
           partida.id = doc.id
           commit('cargarPartidas', partida)
@@ -115,6 +114,8 @@ export default {
       db.collection('partidas').doc(payload).delete()
       .then(() => {
         commit('eliminarPartida', payload)
+      }).catch((err) => {
+        console.log(err)
       })
     }
   }
