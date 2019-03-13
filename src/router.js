@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store/store'
+
 import Home from './views/Home.vue'
 import CrearPartida from './views/CrearPartida.vue'
 import BorrarPartida from './views/BorrarPartida.vue'
@@ -13,7 +15,7 @@ import Campeonatos from './views/campeonatos/Campeonatos.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -25,7 +27,10 @@ export default new Router({
     {
       path: '/crearpartida',
       name: 'crearpartida',
-      component: CrearPartida
+      component: CrearPartida,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/partida/:id',
@@ -36,13 +41,19 @@ export default new Router({
     {
       path: '/borrarpartida',
       name: 'borrarpartida',
-      component: BorrarPartida
+      component: BorrarPartida,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/introducirresultado/:id',
       name: 'introducirresultado',
       props: true,
-      component: IntroducirResultado
+      component: IntroducirResultado,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/login',
@@ -52,20 +63,33 @@ export default new Router({
     {
       path: '/signin',
       name: 'signin',
-      component: SignIn
+      component: SignIn,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/campeonatos',
       name: 'campeonatos',
-      component: Campeonatos
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: Campeonatos,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
+const nStore = store
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(rec => rec.meta.requiresAuth)) {
+    let user = nStore.getters.getUser
+    if(user) {
+      next()
+    } else {
+      next({name: 'home'})
+    }
+  } else {
+    next()
+  }
+})
+export default router

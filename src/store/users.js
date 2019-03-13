@@ -1,6 +1,7 @@
 import db from '@/firebase/init.js'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import router from '@/router'
 
 
 export default {
@@ -15,7 +16,18 @@ export default {
     },
     roles: state=> {
       return state.roles
+    },
+    getUser() {
+      return firebase.auth().currentUser
+    },
+    rolUser: state => {
+      if (state.user) {
+        return state.user.rol
+      } else {
+        return null
+      }
     }
+    
   },
   mutations: {
     feedback: (context, payload) => {
@@ -24,17 +36,14 @@ export default {
     logOut(context) {
       context.user = null
     },
-    logIn: (context, payload) => {
-      console.log(payload)
-    },
     setUser: (context, payload) => {
       context.user = payload
-      console.log(context.user)
     }
 
   },
   actions: {
     signIn: ({commit}, payload) => {
+      commit('loading', true)
       let ref = db.collection('users').doc(payload.user)
       ref.get().then(doc=> {
         if(doc.exists) {
@@ -48,9 +57,9 @@ export default {
               rol: payload.rol,
               user_id: cred.user.uid
             }).then(() => {
-              this.$router.push('/')
+              commit('loading', false)
+              router.push({name: 'home'})
             })
-
           })
           .catch(err=> {
             commit('feedback', err.message)
@@ -62,15 +71,17 @@ export default {
       console.log(payload.email)
     },
     logIn: ({commit}, payload) => {
+      commit('loading', true)
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
       .then(cred=> {
         db.collection('users').where('user_id', "==", cred.user.uid).get()
         .then(snapshot=> {
           snapshot.forEach(doc=> {
-            console.log(doc.id)
             db.collection('users').doc(doc.id).get()
             .then(user=> {
               commit('setUser', user.data())
+              commit('loading', false)
+              router.push({name: 'home'})
             })
           })
         })
@@ -83,6 +94,20 @@ export default {
       firebase.auth().signOut().then(() => {
         commit('logOut')
       })
+    },
+    setUser: ({commit}, payload) => {
+      commit('loading', true)
+      db.collection('users').where('user_id', "==", payload).get()
+        .then(snapshot=> {
+          snapshot.forEach(doc=> {
+            db.collection('users').doc(doc.id).get()
+            .then(user=> {
+              commit('setUser', user.data())
+              commit('loading', false)
+              router.push({name: 'home'})
+            })
+          })
+        })
     }
   }
 }
