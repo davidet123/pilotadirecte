@@ -85,7 +85,7 @@ export default {
         this.$router.push(link)
       } else if (link === 'logout') {
         this.$store.dispatch('logOut')
-        //this.$router.push({name: 'home'})
+        this.$router.go()
       }
       this.drawer = false
     }

@@ -5,11 +5,13 @@
     <v-content>
       <router-view/>
     </v-content>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import NavBar from './components/navbar/NavBar.vue'
+import Footer from './components/footer/Footer.vue'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -17,7 +19,8 @@ import 'firebase/auth'
 export default {
   name: 'App',
   components: {
-    NavBar
+    NavBar,
+    Footer
   },
   data () {
     return {
