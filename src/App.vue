@@ -25,14 +25,17 @@ export default {
     }
   },
   created() {
+    
     this.$store.dispatch('cargarPartidas')
     this.$store.dispatch('cargarCampeonatos')
-    this.$store.dispatch('actualizarPartidas')
-    let user = firebase.auth().currentUser
+    this.$store.dispatch('actualizarMarcador')
+    
+     let user = firebase.auth().currentUser
     //console.log(user)
     if(user) {
       this.$store.dispatch('setUser', user.uid)
     }
+   
   }
 }
 </script>

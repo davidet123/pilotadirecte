@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '@/store/store'
+
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
 
 import Home from './views/Home.vue'
 import CrearPartida from './views/CrearPartida.vue'
@@ -78,11 +81,11 @@ const router = new Router({
     }
   ]
 })
-const nStore = store
 
 router.beforeEach((to, from, next) => {
   if(to.matched.some(rec => rec.meta.requiresAuth)) {
-    let user = nStore.getters.getUser
+    let user = firebase.auth().currentUser
+
     if(user) {
       next()
     } else {

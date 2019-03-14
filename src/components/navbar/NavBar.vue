@@ -9,7 +9,7 @@
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-xs-only" v-if="!cargando">
+    <v-toolbar-items class="hidden-xs-only">
       <v-btn flat
       v-for="item in links"
       :key="item.titulo"
@@ -20,7 +20,7 @@
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
-  <v-navigation-drawer v-model="drawer" app class="orange darken-1" v-if="!cargando">
+  <v-navigation-drawer v-model="drawer" app class="orange darken-1" >
     <h3 class="white--text text-xs-center py-3">PILOTADIRECTE</h3>
     <v-list>
       <v-list-tile
@@ -58,7 +58,7 @@ export default {
       return this.$store.getters.loading
     },
     links() {
-      let menuItems = [{icon: 'lock_open', titulo: 'log In', link: 'login'}]
+      let menuItems = [{icon: 'lock_open', titulo: 'log In', link: '/login'}]
       if(this.user) {
         menuItems = [
         {icon: 'control_point', titulo: 'Crear Partida', link: '/crearpartida'},
@@ -85,7 +85,7 @@ export default {
         this.$router.push(link)
       } else if (link === 'logout') {
         this.$store.dispatch('logOut')
-        this.$router.push({name: 'home'})
+        //this.$router.push({name: 'home'})
       }
       this.drawer = false
     }
@@ -93,7 +93,7 @@ export default {
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.user = user
+        this.user = firebase.auth().currentUser
       } else {
         this.user = null
       }

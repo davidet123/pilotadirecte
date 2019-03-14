@@ -52,7 +52,6 @@ export default {
     setUser: (context, payload) => {
       context.user = payload
     }
-
   },
   actions: {
     signIn: ({commit}, payload) => {
@@ -117,7 +116,6 @@ export default {
           .then(user=> {
             commit('setUser', user.data())
             commit('loading', false)
-            router.push({name: 'home'})
           })
         })
       })

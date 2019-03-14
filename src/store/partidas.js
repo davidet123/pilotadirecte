@@ -68,6 +68,21 @@ export default {
     },
     loading: (context, payload) => {
       context.cargando = payload
+    },
+    actualizarPartida: (context, payload) => {
+      let partida = context.partidas.find(id => {
+        return id.id === payload.id
+      })
+        partida.equipo1 = payload.partida.equipo1,
+        partida.compEquipo1 = payload.partida.compEquipo1,
+        partida.equipo = payload.partida.equipo2,
+        partida.compEquipo2 = payload.partida.compEquipo2,
+        partida.fecha = payload.partida.fecha,
+        partida.lugar = payload.partida.lugar,
+        partida.hora = payload.partida.hora,
+        partida.campeonato = payload.partida.campeonato
+
+      
     }
   },
   actions: {
@@ -99,7 +114,7 @@ export default {
         })
       })
     },
-    actualizarPartidas: ({commit})=> {
+    actualizarMarcador: ({commit})=> {
       db.collection('partidas').onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === "modified") {
@@ -115,6 +130,15 @@ export default {
       .then(() => {
         commit('eliminarPartida', payload)
       }).catch((err) => {
+        console.log(err)
+      })
+    },
+    actualizarPartida: ({commit}, payload) => {
+      db.collection('partidas').doc(payload.id).update(payload.partida)
+      .then(() => {
+        commit('actualizarPartida', payload) 
+      })
+      .catch(err => {
         console.log(err)
       })
     }

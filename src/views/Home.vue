@@ -23,7 +23,7 @@
           <v-flex xs7 sm6 offset-sm1 class="pl-2"><p>{{ partida.equipo2 }}</p></v-flex>
           <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.juegoEq2 }}</p></v-flex>
           <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.puntosEq2 }}</p></v-flex>
-          <v-flex xs12  class="text-xs-center" v-if="getUser">
+          <v-flex xs12  class="text-xs-center" v-if="user">
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
         </v-layout>
@@ -31,7 +31,7 @@
 
     
 
-      <h2 class="pa-3 mt-3 text-xs-center"  v-if="partidesSeguents.length != 0">Próximes partides</h2>
+      <h2 class="pa-3 mt-3 text-xs-center"  v-if="partidesSeguents.length != 0">Pròximes partides</h2>
       <v-card flat class="pa-3" 
         style="cursor: pointer;"
         v-for="partida in partidesSeguents"
@@ -58,7 +58,7 @@
             <div class="caption grey--text text-xs-center">HORA</div>
             <div class="text-xs-center">{{ partida.hora }}</div>
           </v-flex>
-          <v-flex xs12  class="text-xs-center" v-if="getUser">
+          <v-flex xs12  class="text-xs-center" v-if="user">
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
         </v-layout>
@@ -66,7 +66,7 @@
 
 
       <h2 class="pa-3 mt-3 text-xs-center"  v-if="partidasAcabadas.length != 0">Partides finalitzades</h2>
-      <v-card flat class="pa-3" 
+      <v-card flat
         style="cursor: pointer;"
         v-for="partida in partidasAcabadas"
         :key="partida.id" 
@@ -74,22 +74,27 @@
         >
         <v-layout row wrap class="fila acabada">
           <v-flex xs8 sm6 offset-sm1 class="pa-2"><h3>{{ partida.campeonato }}</h3></v-flex>
-          <v-flex xs2 class="py-2 text-xs-center"><h4>JOCS</h4></v-flex>
-          <v-flex xs8 sm6 offset-sm1 class="pl-2"><p>{{ partida.equipo1 }}</p></v-flex>
-          <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.juegoEq1 }}</p></v-flex>
-          <v-flex xs8 sm6 offset-sm1 class="pl-2"><p>{{ partida.equipo2 }}</p></v-flex>
-          <v-flex xs2 class="text-xs-center"><p>{{ partida.marcador.juegoEq2 }}</p></v-flex>
+          <v-flex xs2 class="py-2 text-xs-center"><h3>RESULTAT</h3></v-flex>
+          <v-flex xs8 sm6 offset-sm1 class="pl-2 pt-2"><p>{{ partida.equipo1 }}</p></v-flex>
+          <v-flex xs2 class="text-xs-center white--text red pt-2"><h3>{{ partida.marcador.juegoEq1 }}</h3></v-flex>
+          <v-flex xs8 sm6 offset-sm1 class="pl-2 pt-2"><p>{{ partida.equipo2 }}</p></v-flex>
+          <v-flex xs2 class="text-xs-center white--text blue pt-2"><h3>{{ partida.marcador.juegoEq2 }}</h3></v-flex>
         </v-layout>
       </v-card>
-
-
      </div>
   </v-container>
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
   export default {
+    data() {
+      return {
+        user: null
+      }
+    },
     computed: {
       partidesDirecte() {
         return this.$store.getters.partidesDirecte;
@@ -106,9 +111,6 @@
       },
       partidasAcabadas() {
         return this.$store.getters.partidasAcabadas
-      },
-      getUser() {
-        return this.$store.getters.getUser
       }
     },
     methods: {
@@ -118,7 +120,16 @@
       introducirresultado(id) {
         this.$router.push('/introducirresultado/' + id)
       }
-    }
+    },
+    created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.user = firebase.auth().currentUser
+      } else {
+        this.user = null
+      }
+    })
+  }
 
   }
 </script>
