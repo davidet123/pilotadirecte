@@ -48,10 +48,10 @@
           <h3 class=" grey--text mb-2">JOCS</h3>
           <h2 class="blue white--text py-2">{{ partida.marcador.juegoEq2 }}</h2>
         </v-flex>
-        <v-flex xs12 v-if="registro.length > 0">
+     <!--    <v-flex xs12 v-if="registro.length > 0">
           <h2 class=" my-2 grey--text">HISTÒRIC</h2>
           <h3 v-for="(entrada, id) in registro" :key="id">{{ entrada }}</h3>
-        </v-flex>
+        </v-flex> -->
       </v-layout>  
       <v-layout row wrap class="text-xs-center" v-if="partida.partidaAcabada">
         <v-flex xs12>
@@ -63,10 +63,10 @@
         <v-flex xs3 sm2>
           <h2 class="blue white--text py-2">{{ partida.marcador.juegoEq2 }}</h2>
         </v-flex>
-        <v-flex xs12 >
+        <!-- <v-flex xs12 >
           <h2 class=" my-2 grey--text">HISTÒRIC</h2>
           <h3 v-for="(entrada, id) in registro" :key="id">{{ entrada }}</h3>
-        </v-flex>
+        </v-flex> -->
       </v-layout>  
   </v-container>
 

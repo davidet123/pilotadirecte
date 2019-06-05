@@ -4,7 +4,8 @@ import db from '@/firebase/init.js'
 export default {
   state: {
      partidas: [],
-     cargando:false
+     cargando:false,
+     snackbar: false
 
   },
   getters: {
@@ -38,13 +39,17 @@ export default {
     },
     loading: state => {
       return state.cargando
+    },
+    snackbar: state=> {
+      return state.snackbar
     }
 
   },
   mutations: {
     addPartida: (context, payload) => {
       context.partidas.push(payload);
-      console.log(payload)
+      context.snackbar = true
+      //console.log(payload)
     },
     cargarPartidas: (context, payload) => {
       context.partidas.push(payload);
@@ -81,8 +86,10 @@ export default {
         partida.lugar = payload.partida.lugar,
         partida.hora = payload.partida.hora,
         partida.campeonato = payload.partida.campeonato
-
-      
+     
+    },
+    cerrarSnackbar: (context, payload) => {
+      context.snackbar = payload
     }
   },
   actions: {

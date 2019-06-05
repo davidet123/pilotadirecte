@@ -1,6 +1,10 @@
 <template>
   <div class="crearPartida">
     <v-container class="pa-3">
+      <v-snackbar v-model="snackbar" top>
+        <span>La partida s'afegit correctament!</span>
+        <v-btn flat @click="cerrarSnackbar">Tancar</v-btn>
+      </v-snackbar>
       <h1 class="text-xs-center">Introduir partida</h1>
       <v-form>
         <v-layout row wrap>
@@ -70,9 +74,9 @@
       return {
         dataPartida: null,
         equipo1: '',
-        compEquipo1: ['', '', ''],
+        compEquipo1: [],
         equipo2: '',
-        compEquipo2: ['', '', ''],
+        compEquipo2: [],
         fecha: null,
         lugar: '',
         hora: '',
@@ -86,14 +90,19 @@
       },
       getCamp() {
         return this.$store.getters.campeonatos
+      },
+      snackbar() {
+        return this.$store.getters.snackbar
       }
     },
     methods: {
       enviar() {
+        let eq1 = this.compEquipo1.join('-')
+        let eq2 = this.compEquipo2.join('-')
         const partida = {
-          equipo1: this.equipo1,
+          equipo1: eq1,
           compEquipo1: this.compEquipo1,
-          equipo2: this.equipo2,
+          equipo2: eq2,
           compEquipo2: this.compEquipo2,
           fecha: this.fecha,
           lugar: this.lugar,
@@ -104,9 +113,18 @@
             puntosEq1: 'NET',
             puntosEq2: 'NET'
           },
-          campeonato: this.campeonato
+          campeonato: this.campeonato,
+          tanteoInicial: this.tanteoInicial
         }
         this.$store.dispatch('addPartida', partida)
+        setTimeout(() => {
+          this.$router.push('/')
+        }, 3000)
+      },
+      cerrarSnackbar() {
+        let cerrar = false
+        this.$store.commit('cerrarSnackbar', cerrar)
+        this.$router.push('/')
       }
     }
   }

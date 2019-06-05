@@ -10,10 +10,42 @@
       <h2>Introduir marcador en directe</h2>
       <v-layout row wrap>
         <v-flex xs12 class="text-xs-center">
-          <h3 class="pa-3">Equips</h3>
-          <v-btn flat class="red white--text mx-0 mb-3" @click="goLive">DIRECTE</v-btn>
+          <v-btn flat class="red white--text mx-0 mt-3" @click="goLive">DIRECTE</v-btn>
         </v-flex>
-        <v-flex xs12 sm6>
+        <v-flex xs12>
+          <v-layout row wrap class="mb-3">
+            <v-flex xs4 offset-xs2>
+              <div class="text-xs-center pa-3"><h4>{{ partida.equipo1 }}</h4></div>
+            </v-flex>
+            <v-flex xs4>
+              <div class="text-xs-center pa-3"><h4>{{ partida.equipo2 }}</h4></div>
+            </v-flex>
+            <v-flex xs2 offset-xs2>
+              <div class="text-xs-center pa-3 red white--text"><h4>{{ juegoEq1 }}</h4></div>
+            </v-flex>
+            <v-flex xs2>
+              <div class="text-xs-center pa-3 red white--text"><h4>{{ puntosEq1 }}</h4></div>
+            </v-flex>
+            <v-flex xs2 >
+              <div class="text-xs-center pa-3 blue white--text"><h4>{{ puntosEq2 }}</h4></div>
+            </v-flex>
+            <v-flex xs2>
+              <div class="text-xs-center pa-3 blue white--text"><h4>{{ juegoEq2 }}</h4></div>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex xs3 offset-xs3>
+              <v-btn flat large class="red white--text mx-0 my-0"  :disabled="desactivar" @click="sumarPunto(1)"><h2>+</h2></v-btn>
+              <v-btn flat large class="red white--text mx-0"  :disabled="desactivar" @click="restarPunto(1)"><h2>-</h2></v-btn>
+            </v-flex>
+            <v-flex xs3 offset-xs1>
+              <v-btn flat large class="blue white--text mx-0 my-0"  :disabled="desactivar" @click="sumarPunto(2)"><h2>+</h2></v-btn>
+              <v-btn flat large class="blue white--text mx-0"  :disabled="desactivar" @click="restarPunto(2)"><h2>-</h2></v-btn>
+            </v-flex>
+
+          </v-layout>
+        </v-flex>
+        <!-- <v-flex xs12 sm6>
           <v-layout row wrap>
             <v-flex xs8>
               <div class="text-xs-center pa-3 red"><h4 class="white--text">{{ partida.equipo1 }}</h4></div>
@@ -74,14 +106,14 @@
               <v-btn flat class="blue white--text mx-0 mt-3"  :disabled="desactivar" @click="restarJuego(2)">-</v-btn>
             </v-flex>
           </v-layout>
-        </v-flex>
+        </v-flex> -->
          <v-layout row wrap>
             <v-flex xs12 class="text-xs-center mt-2">
               <v-btn flat class="red white--text mx-0 mb-3" :disabled="desactivar" @click="fin">FINALITZAR PARTIDA</v-btn>
             </v-flex>
-            <v-flex xs12 class="text-xs-center mt-2">
+            <!-- <v-flex xs12 class="text-xs-center mt-2">
               <v-btn flat class="red white--text mx-0 mb-3" @click="resetLog">RESET LOG</v-btn>
-            </v-flex>
+            </v-flex> -->
           </v-layout>
         
 
@@ -108,6 +140,7 @@ export default {
         partidaCargada: false,
         log: [],
         addLog: false,
+        tanteoInicial: 0
       }
     },
   computed: {
@@ -135,6 +168,7 @@ export default {
           this.desactivar = false
         }          
         this.partidaCargada = true
+        this.tanteoInicial = data.tanteoInicial
       }
     },
     setMarcador (valor, equipo) {
@@ -190,13 +224,16 @@ export default {
       } else if (equipo === 2) {
         var puntoAzul = this.puntos.indexOf(this.puntosEq2)
         puntoAzul --
+        console.log(puntoAzul >= 0 , this.juegoEq2 >= 0)
         if (puntoAzul >= 0) {
           this.puntosEq2 = this.puntos[puntoAzul]
+
         } else {
           this.puntosEq2 = this.puntos[3]
           this.restarJuego(2)
         }
-      }
+        
+      } 
     },
     sumarJuego(equipo) {
       this.addLog = true
@@ -212,10 +249,24 @@ export default {
     },
     restarJuego(equipo) {
       this.addLog = false
-      if (equipo === 1 && this.juegoEq1 > 15) {
-        this.juegoEq1 -= 5
-      } else if (equipo === 2 && this.juegoEq2 > 15) {
-        this.juegoEq2 -= 5
+      if (equipo === 1) {
+        let temp = this.juegoEq1
+        temp -= 5
+        if (temp < this.tanteoInicial) {
+          this.juegoEq1 = this.tanteoInicial
+          this.puntosEq1 = 'NET'
+        } else {
+          this.juegoEq1 = temp
+        }
+      } else if (equipo === 2) {
+        let temp = this.juegoEq2
+        temp -= 5
+        if (temp < this.tanteoInicial) {
+          this.juegoEq2 = this.tanteoInicial
+          this.puntosEq2 = 'NET'
+        } else {
+          this.juegoEq2 = temp
+        }
       }
     },
     goLive() {
