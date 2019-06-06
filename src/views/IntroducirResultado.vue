@@ -14,32 +14,34 @@
         </v-flex>
         <v-flex xs12>
           <v-layout row wrap class="mb-3">
-            <v-flex xs4 offset-xs2>
+            <v-flex xs6>
               <div class="text-xs-center pa-3"><h4>{{ partida.equipo1 }}</h4></div>
             </v-flex>
-            <v-flex xs4>
+            <v-flex xs6>
               <div class="text-xs-center pa-3"><h4>{{ partida.equipo2 }}</h4></div>
             </v-flex>
-            <v-flex xs2 offset-xs2>
+            <v-flex xs3>
               <div class="text-xs-center pa-3 red white--text"><h4>{{ juegoEq1 }}</h4></div>
             </v-flex>
-            <v-flex xs2>
+            <v-flex xs3>
               <div class="text-xs-center pa-3 red white--text"><h4>{{ puntosEq1 }}</h4></div>
             </v-flex>
-            <v-flex xs2 >
+            <v-flex xs3>
               <div class="text-xs-center pa-3 blue white--text"><h4>{{ puntosEq2 }}</h4></div>
             </v-flex>
-            <v-flex xs2>
+            <v-flex xs3>
               <div class="text-xs-center pa-3 blue white--text"><h4>{{ juegoEq2 }}</h4></div>
             </v-flex>
           </v-layout>
           <v-layout row wrap>
-            <v-flex xs3 offset-xs3>
+            <v-flex xs6 class="text-xs-center">
               <v-btn flat large class="red white--text mx-0 my-0"  :disabled="desactivar" @click="sumarPunto(1)"><h2>+</h2></v-btn>
+              <br>
               <v-btn flat large class="red white--text mx-0"  :disabled="desactivar" @click="restarPunto(1)"><h2>-</h2></v-btn>
             </v-flex>
-            <v-flex xs3 offset-xs1>
+            <v-flex xs6 class="text-xs-center">
               <v-btn flat large class="blue white--text mx-0 my-0"  :disabled="desactivar" @click="sumarPunto(2)"><h2>+</h2></v-btn>
+              <br>
               <v-btn flat large class="blue white--text mx-0"  :disabled="desactivar" @click="restarPunto(2)"><h2>-</h2></v-btn>
             </v-flex>
 
@@ -108,6 +110,13 @@
           </v-layout>
         </v-flex> -->
          <v-layout row wrap>
+           <v-flex xs12>
+             <v-textarea
+             v-model="log"
+             solo
+             class="mt-3"
+             label="Anotacions de la partida"></v-textarea>
+           </v-flex>
             <v-flex xs12 class="text-xs-center mt-2">
               <v-btn flat class="red white--text mx-0 mb-3" :disabled="desactivar" @click="fin">FINALITZAR PARTIDA</v-btn>
             </v-flex>
@@ -138,7 +147,7 @@ export default {
         partidaAcabada: false,
         desactivar: true,
         partidaCargada: false,
-        log: [],
+        log: null,
         addLog: false,
         tanteoInicial: 0
       }
@@ -172,7 +181,7 @@ export default {
       }
     },
     setMarcador (valor, equipo) {
-      this.addLog = true
+      //this.addLog = true
       if (equipo === 1) {
         this.puntosEq1 = valor
       } else if (equipo === 2) {
@@ -180,7 +189,8 @@ export default {
       }
     },
     sumarPunto(equipo) {
-      this.addLog = true
+      //this.addLog = true
+      console.log(this.log)
       var puntoAzul = this.puntos.indexOf(this.puntosEq2)
       var puntoRojo = this.puntos.indexOf(this.puntosEq1)
       if (equipo === 1) {
@@ -224,7 +234,7 @@ export default {
       } else if (equipo === 2) {
         var puntoAzul = this.puntos.indexOf(this.puntosEq2)
         puntoAzul --
-        console.log(puntoAzul >= 0 , this.juegoEq2 >= 0)
+        //console.log(puntoAzul >= 0 , this.juegoEq2 >= 0)
         if (puntoAzul >= 0) {
           this.puntosEq2 = this.puntos[puntoAzul]
 
@@ -239,16 +249,16 @@ export default {
       this.addLog = true
       if (equipo === 1) {
         this.juegoEq1 += 5
-        this.log.push('JOC ROJOS')
+        //this.log.push('JOC ROJOS')
       } else if (equipo === 2) {
-        this.log.push('JOC BLAUS')
+        //this.log.push('JOC BLAUS')
         this.juegoEq2 += 5
       }
        this.puntosEq1 = 'NET'
        this.puntosEq2 = 'NET'
     },
     restarJuego(equipo) {
-      this.addLog = false
+      //this.addLog = false
       if (equipo === 1) {
         let temp = this.juegoEq1
         temp -= 5
@@ -274,12 +284,12 @@ export default {
       this.desactivar = !this.desactivar
     },
     update() {
-      if (this.addLog) {
+      /* if (this.addLog) {
         let log = this.juegoEq1 + ' ' + this.puntosEq1 + ' | ' + this.puntosEq2 + ' ' + this.juegoEq2
         if (this.log[this.log.length -1] !== (log)) {
           this.log.push(log)
         }
-      }
+      } */
       db.collection('partidas').doc(this.id)
       .update({marcador: {
       puntosEq1: this.puntosEq1,
@@ -289,11 +299,11 @@ export default {
       },
       log: this.log})
     },
-    resetLog() {
+    /* resetLog() {
       this.log = []
       this.reset = true
       this.update()
-    },
+    }, */
     fin() {
       this.directo = false
       this.desactivar = true

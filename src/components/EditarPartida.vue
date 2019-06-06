@@ -100,10 +100,12 @@ export default {
   },
   methods: {
     enviar () {
+      let eq1 = this.compEquipo1.join('-')
+      let eq2 = this.compEquipo2.join('-')
       const partida = {
-          equipo1: this.equipo1,
+          equipo1: eq1,
           compEquipo1: this.compEquipo1,
-          equipo2: this.equipo2,
+          equipo2: eq2,
           compEquipo2: this.compEquipo2,
           fecha: this.fecha,
           lugar: this.lugar,

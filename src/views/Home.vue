@@ -62,10 +62,12 @@
             <v-btn flat class="success mx-0 mt-3" @click="introducirresultado(partida.id)">Resultado</v-btn>
           </v-flex>
         </v-layout>
-      </v-card>
+      </v-card> 
 
-
-      <h2 class="pa-3 mt-3 text-xs-center"  v-if="partidasAcabadas.length != 0">Partides finalitzades</h2>
+      <div v-if="partidasAcabadas.length != 0">
+        <h2 class="px-3  pa-3 mt-3 text-xs-center">Partides finalitzades</h2>
+        <h5 class="mb-3 text-xs-center">Es mostren les 10 últimes partides jugades</h5>
+      </div>
       <v-card flat
         style="cursor: pointer;"
         v-for="partida in partidasAcabadas"

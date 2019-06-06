@@ -63,6 +63,10 @@
         <v-flex xs3 sm2>
           <h2 class="blue white--text py-2">{{ partida.marcador.juegoEq2 }}</h2>
         </v-flex>
+        <v-flex xs12 v-if="registre">
+          <h2 class="text-xs-center mt-3">Anotacions de la partida</h2>
+          <p class="text-xs-left pa-2">{{ partida.log }}</p>
+        </v-flex>
         <!-- <v-flex xs12 >
           <h2 class=" my-2 grey--text">HISTÒRIC</h2>
           <h3 v-for="(entrada, id) in registro" :key="id">{{ entrada }}</h3>
@@ -98,6 +102,10 @@ export default {
     partida () {
       return this.$store.getters.partidaCargada(this.$route.params.id)
     },
+    registre() {
+      return this.log !== null
+    }
+      /* ,
     registro() {
       var log = this.$store.getters.partidaCargada(this.$route.params.id)
       var registro = []
@@ -105,7 +113,7 @@ export default {
         registro.push(log.log[i])
       }
       return registro
-    }
+    } */
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {

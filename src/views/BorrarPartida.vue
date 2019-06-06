@@ -10,7 +10,7 @@
           <v-list-tile-content>
             <v-list-tile-title>{{ partida.equipo1 }} - {{ partida.equipo2 }}</v-list-tile-title>
             <v-list-tile-sub-title>
-              {{ partida.campeonato }} - {{ partida.id}}
+              {{ partida.campeonato }}
             </v-list-tile-sub-title>
           </v-list-tile-content>
           <v-list-tile-action>

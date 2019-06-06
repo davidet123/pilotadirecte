@@ -29,10 +29,10 @@ export default {
       }
     },
     partidasAcabadas: state => {
-      var acabada = state.partidas.filter(partida => {
+      let acabada = state.partidas.filter(partida => {
         return partida.partidaAcabada == true
       })
-      return acabada
+      return acabada.slice(-10)
     },
     cargarPartidos: state=> {
       return state.partidas
@@ -98,7 +98,7 @@ export default {
       partida = {
         ...partida,
         directo: false,
-        log: [],
+        log: null,
         partidaAcabada: false
       }
       db.collection('partidas').add(partida)
